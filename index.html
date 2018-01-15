@@ -16,6 +16,12 @@
             h1{
                 display: inline;
             }
+            button{
+                position:absolute; 
+                margin-left: 2%;
+                width: 150px;
+                bottom: 280px;
+            }
 
         </style>
         </head>
@@ -29,9 +35,9 @@
             var score = 0;
 
             function startGame() {
-                myGamePiece = new component(85, 85, "dragon.png", 10, 120, "image");
+                myGamePiece = new component(85, 85, "dragon.png", 300, 120, "image");
                 myBackground = new component(1500 , 500 , "https://opengameart.org/sites/default/files/2_21.png", 0, 0, "background");
-                myScore = new component("30px", "Consolas", "black", 1000, 500, "text");
+                myScore = new component("30px", "Consolas", "black", 1250, 50, "text");
                 myGameArea.start();
             }
 
@@ -71,7 +77,11 @@
                 this.update = function() {
                     ctx = myGameArea.context;
                     ctx.fillStyle = color;
-        
+                    if (this.type == "text") {
+                        ctx.font = this.width + " " + this.height;
+                        ctx.fillStyle = color;
+                        ctx.fillText(this.text, this.x, this.y);
+                    }
                     if (type == "image" || type == "background") {
                         ctx.drawImage(this.image, 
                             this.x, 
@@ -87,6 +97,7 @@
                         ctx.fillStyle = color;
                         ctx.fillRect(this.x, this.y, this.width, this.height);
                     }
+                    
         
                 }
                 this.newPos = function() {
@@ -129,7 +140,6 @@
                     for (i = 0; i < myObstacles.length; i += 1) {
                         if (myGamePiece.crashWith(myObstacles[i])) {
                             myGameArea.stop();
-                            alert("Your score was: " + score)
                             return;
                         } 
                     }
@@ -149,7 +159,7 @@
                         minGap = 175;
                         maxGap = 200;
                         gap = Math.floor(Math.random()*(maxGap-minGap+1)+minGap);
-                        myObstacles.push(new component(10, height, "Salmon ", x, 0));
+                        myObstacles.push(new component(10, height, "Salmon", x, 0));
                         myObstacles.push(new component(10, x - height - gap, "Salmon ", x, height + gap));
                     }
                     for (i = 0; i < myObstacles.length; i += 1) {
@@ -172,15 +182,23 @@
                 myGamePiece.image.src = "dragon.png";
                 if (key.keyCode == "87") {myGamePiece.speedY = -2; }
                 if (key.keyCode == "83") {myGamePiece.speedY = 2; }
+                if (key.keyCode == "83") {myGamePiece.speedY = 2; }
             }
             function clearmove() {
                 myGamePiece.image.src = "dragon.png";
                 myGamePiece.speedX = 0; 
                 myGamePiece.speedY = 0; 
             }
+            function restart() {
+                myGameArea.stop();
+                myGameArea.clear();
+                myObstacles = [];
+                score = 0;
+                startGame();
+            }
 
         </script>
-
+        <button onmousedown="restart()">Restart</button><br>
         <h1>Controls:</h1><h1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h1><h1>How to play:</h1>
         <p>W- Upward&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             Use W and S to move up and down<br><br>S- DownWard&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dont hit the sides of the lines</p>
