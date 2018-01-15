@@ -29,7 +29,7 @@
             var score = 0;
 
             function startGame() {
-                myGamePiece = new component(100, 100, "https://mobilegamegraphics.com/pvpaterno/flying_pack/flying_1.gif", 10, 120, "image");
+                myGamePiece = new component(85, 85, "dragon.png", 10, 120, "image");
                 myBackground = new component(1500 , 500 , "https://opengameart.org/sites/default/files/2_21.png", 0, 0, "background");
                 myScore = new component("30px", "Consolas", "black", 1000, 500, "text");
                 myGameArea.start();
@@ -169,12 +169,12 @@
             }
 
             function checkKeyPress(key) {
-                myGamePiece.image.src = "https://mobilegamegraphics.com/pvpaterno/flying_pack/flying_1.gif";
+                myGamePiece.image.src = "dragon.png";
                 if (key.keyCode == "87") {myGamePiece.speedY = -2; }
                 if (key.keyCode == "83") {myGamePiece.speedY = 2; }
             }
             function clearmove() {
-                myGamePiece.image.src = "https://mobilegamegraphics.com/pvpaterno/flying_pack/flying_1.gif";
+                myGamePiece.image.src = "dragon.png";
                 myGamePiece.speedX = 0; 
                 myGamePiece.speedY = 0; 
             }
