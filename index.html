@@ -35,7 +35,7 @@
             var score = 0;
 
             function startGame() {
-                myGamePiece = new component(85, 85, "dragon.png", 300, 120, "image");
+                myGamePiece = new component(85, 85, "dragon.gif", 300, 120, "image");
                 myBackground = new component(1500 , 500 , "https://opengameart.org/sites/default/files/2_21.png", 0, 0, "background");
                 myScore = new component("30px", "Consolas", "black", 1250, 50, "text");
                 myGameArea.start();
@@ -179,13 +179,13 @@
             }
 
             function checkKeyPress(key) {
-                myGamePiece.image.src = "dragon.png";
+                myGamePiece.image.src = "dragon.gif";
                 if (key.keyCode == "87") {myGamePiece.speedY = -2; }
                 if (key.keyCode == "83") {myGamePiece.speedY = 2; }
                 if (key.keyCode == "83") {myGamePiece.speedY = 2; }
             }
             function clearmove() {
-                myGamePiece.image.src = "dragon.png";
+                myGamePiece.image.src = "dragon.gif";
                 myGamePiece.speedX = 0; 
                 myGamePiece.speedY = 0; 
             }
