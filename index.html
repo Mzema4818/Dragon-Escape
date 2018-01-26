@@ -18,9 +18,9 @@
             }
             button{
                 position:absolute; 
-                margin-left: 2%;
+                margin-left: 5%;
                 width: 150px;
-                bottom: 200px;
+                bottom: 175px;
             }
         </style>
         </head>
@@ -29,13 +29,15 @@
         <script>
             var myGamePiece;
             var myBackground;
-            var myObstacles = []
-            ;
+            var myObstacles = [];
+            var health = 250
             var myScore;
+            var myHealth
             var score = 0;
             function startGame() {
                 myGamePiece = new component(85, 85, "dragon.png", 300, 120, "image");
                 myBackground = new component(1500 , 565 , "https://opengameart.org/sites/default/files/2_21.png", 0, 0, "background");
+                myHealth = new component("30px", "Consolas", "black", 1250, 100, "text");
                 myScore = new component("30px", "Consolas", "black", 1250, 50, "text");
                 myGameArea.start();
             }
@@ -110,18 +112,20 @@
                         }
                     }
                 }
+                
                 this.hitBottom = function() {
                 var rockbottom = myGameArea.canvas.height - this.height;
                     if (this.y > rockbottom) {
                         this.y = rockbottom;
-                        this.gravitySpeed = 0;
+                        myGameArea.stop()
                     }
                 }
-                this.topbottom = function() {
-                var topbottom = myGameArea.canvas.height + this.height;
-                    if (this.x > topbottom) {
-                        this.x = topbottom;
+                this.hitTop = function() {
+                var top = 565;
+                    if (this.x > top) {
+                        this.x = top;
                         this.gravitySpeed = 0;
+                        console.log(10)
                     }
                 }
                 
@@ -153,9 +157,11 @@
                     var x, height, gap, minHeight, maxHeight, minGap, maxGap;
                     for (i = 0; i < myObstacles.length; i += 1) {
                         if (myGamePiece.crashWith(myObstacles[i])) {
-                            myGameArea.stop();
-                            return;
+                            health -= 10;
                         } 
+                    }
+                    if(health == 0){
+                        myGameArea.stop()
                     }
                     myGameArea.clear();
                     myGameArea.clear();
@@ -169,6 +175,7 @@
                     x = myGameArea.canvas.width;
                         minHeight = 30;
                         maxHeight = 555;
+                        var picture1 = "monster1.gif"
                         height = Math.floor(Math.random()*(maxHeight-minHeight+1)+minHeight);
                         myObstacles.push(new component(50, 50, "monster1.gif", x, height, "image"));
                     }
@@ -176,14 +183,17 @@
                     x = myGameArea.canvas.width;
                         minHeight2 = 30;
                         maxHeight2 = 555;
+                        var picture2 = "monster2.gif"
                         height2 = Math.floor(Math.random()*(maxHeight2-minHeight2+1)+minHeight2);
-                        myObstacles.push(new component(50, 50, "monster2.gif", x, height2, "image"));
+                        myObstacles.push(new component(50, 50, picture2, x, height2, "image"));
                     }
                     for (i = 0; i < myObstacles.length; i += 1) {
                     myObstacles[i].x += -10;
                         myObstacles[i].update();
                         score += 1
                     }
+                myHealth.text="HEALTH: " + health;
+                myHealth.update();
                 myScore.text="SCORE: " + score;
                 myScore.update();
                 myGamePiece.newPos();    
@@ -209,6 +219,7 @@
                 myGameArea.stop();
                 myGameArea.clear();
                 myObstacles = [];
+                health = 100;
                 score = 0;
                 startGame();
             }
@@ -216,7 +227,7 @@
         <button onmousedown="restart()">Restart</button><br>
         <h1>Controls:</h1><h1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h1><h1>How to play:</h1>
         <p>W- Upward&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                Dont hit the sides of the lines<br>S- Downward&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                Dont hit the sides or enemies<br>S- Downward&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <br>A- Left<br>D- Right</p>
 
     </body>
