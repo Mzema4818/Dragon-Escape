@@ -30,6 +30,7 @@
             var myGamePiece;
             var myBackground;
             var myObstacles = [];
+            var myHeart = [];
             var health = 100;
             var myScore;
             var myHealth;
@@ -158,12 +159,19 @@
                     var x, height, gap, minHeight, maxHeight, minGap, maxGap;
                     for (i = 0; i < myObstacles.length; i += 1) {
                         if (myGamePiece.crashWith(myObstacles[i])) {
+                            health -= 20
                             myObstacles = []
-                            health -= 20;
-                        } 
+                            return;
+                        }if(health == 0){
+                            myGameArea.stop()
+                        }
                     }
-                    if(health == 0){
-                        myGameArea.stop()
+                    for (i = 0; i < myHeart.length; i += 1) {
+                        if (myGamePiece.crashWith(myHeart[i])) {
+                            health += 10
+                            myHeart = []
+                            return;
+                        }
                     }
                     myGameArea.clear();
                     myGameArea.clear();
@@ -176,7 +184,7 @@
                     if (myGameArea.frameNo == 1 || everyinterval(30)) {
                     x = myGameArea.canvas.width;
                         minHeight = 30;
-                        maxHeight = 555;
+                        maxHeight = 545;
                         var picture1 = "monster1.gif"
                         height = Math.floor(Math.random()*(maxHeight-minHeight+1)+minHeight);
                         myObstacles.push(new component(50, 50, "monster1.gif", x, height, "image"));
@@ -184,15 +192,27 @@
                     if (myGameArea.frameNo == 1 || everyinterval(40)) {
                     x = myGameArea.canvas.width;
                         minHeight2 = 30;
-                        maxHeight2 = 555;
+                        maxHeight2 = 545;
                         var picture2 = "monster2.gif"
                         height2 = Math.floor(Math.random()*(maxHeight2-minHeight2+1)+minHeight2);
                         myObstacles.push(new component(50, 50, picture2, x, height2, "image"));
+                    }
+                    if (myGameArea.frameNo == 1 || everyinterval(250)) {
+                    x = myGameArea.canvas.width;
+                        minHeight3 = 30;
+                        maxHeight3 = 545;
+                        var picture3 = "heart.png"
+                        height3 = Math.floor(Math.random()*(maxHeight3-minHeight3+1)+minHeight3);
+                        myHeart.push(new component(25, 25, picture3, x, height3, "image"));
                     }
                     for (i = 0; i < myObstacles.length; i += 1) {
                     myObstacles[i].x += -10;
                         myObstacles[i].update();
                         score += 1
+                    }
+                    for (i = 0; i < myHeart.length; i += 1) {
+                    myHeart[i].x += -10;
+                        myHeart[i].update();
                     }
                 myHealth.text="HEALTH: " + health;
                 myHealth.update();
@@ -221,6 +241,7 @@
                 myGameArea.stop();
                 myGameArea.clear();
                 myObstacles = [];
+                myHeart = [];
                 health = 100;
                 score = 0;
                 startGame();
