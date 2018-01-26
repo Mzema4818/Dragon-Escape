@@ -20,7 +20,7 @@
                 position:absolute; 
                 margin-left: 5%;
                 width: 150px;
-                bottom: 175px;
+                bottom: 200px;
             }
         </style>
         </head>
@@ -30,12 +30,12 @@
             var myGamePiece;
             var myBackground;
             var myObstacles = [];
-            var health = 250
+            var health = 100;
             var myScore;
-            var myHealth
+            var myHealth;
             var score = 0;
             function startGame() {
-                myGamePiece = new component(85, 85, "dragon.png", 300, 120, "image");
+                myGamePiece = new component(85, 85, "dragon.png", 300, 150, "image");
                 myBackground = new component(1500 , 565 , "https://opengameart.org/sites/default/files/2_21.png", 0, 0, "background");
                 myHealth = new component("30px", "Consolas", "black", 1250, 100, "text");
                 myScore = new component("30px", "Consolas", "black", 1250, 50, "text");
@@ -114,19 +114,20 @@
                 }
                 
                 this.hitBottom = function() {
-                var rockbottom = myGameArea.canvas.height - this.height;
-                    if (this.y > rockbottom) {
-                        this.y = rockbottom;
+                var bottom = 485;
+                var top = -5;
+                var right = 1417;
+                var left = 0;
+                    if (this.y > bottom) {
+                        this.y = bottom;
                         myGameArea.stop()
-                    }
+                    }if (this.y < top) {
+                    this.y = top;
+                    myGameArea.stop()
+                    }if (this.x > right) {
+                        this.x = right;
+                        myGameArea.stop()
                 }
-                this.hitTop = function() {
-                var top = 565;
-                    if (this.x > top) {
-                        this.x = top;
-                        this.gravitySpeed = 0;
-                        console.log(10)
-                    }
                 }
                 
                 this.crashWith = function(otherobj) {
@@ -157,7 +158,8 @@
                     var x, height, gap, minHeight, maxHeight, minGap, maxGap;
                     for (i = 0; i < myObstacles.length; i += 1) {
                         if (myGamePiece.crashWith(myObstacles[i])) {
-                            health -= 10;
+                            myObstacles = []
+                            health -= 20;
                         } 
                     }
                     if(health == 0){
