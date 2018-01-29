@@ -185,12 +185,14 @@
                     for (i = 0; i < myHeart.length; i += 1) {
                         if (myGamePiece.crashWith(myHeart[i])) {
                             health += 10
+                            myHeart = []
                             return;
                         }
                     }
                     for (i = 0; i < myClock.length; i += 1) {
                         if (myGamePiece.crashWith(myClock[i])) {
                             time += 1000
+                            myClock = []
                             return;
                         }
                     }
@@ -226,7 +228,7 @@
                         height3 = Math.floor(Math.random()*(maxHeight3-minHeight3+1)+minHeight3);
                         myHeart.push(new component(20, 20, picture3, x, height3, "image"));
                     }
-                    if (myGameArea.frameNo == 1 || everyinterval(54)) {
+                    if (myGameArea.frameNo == 1 || everyinterval(76)) {
                     x = myGameArea.canvas.width;
                         minHeight4 = 30;
                         maxHeight4 = 545;
@@ -288,7 +290,7 @@
         <h1>Controls:</h1><h1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h1><h1>How to play:</h1>
         <p>W- Upward&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 Dont hit the sides or enemies<br>S- Downward&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <br>A- Left<br>D- Rightttt</p>
+            <br>A- Left<br>D- Right</p>
 
     </body>
 </html>
