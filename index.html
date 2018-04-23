@@ -47,7 +47,7 @@
             var myHealth;
             var myTime;
             var myClock = [];
-            var time = 10000;
+            var time = 1000;
             var score = 0;
             function startGame() {
                 myGamePiece = new component(85, 85, "dragon.png", 300, 150, "image");
@@ -182,8 +182,10 @@
                             return;
                         }if(health <= 0){
                             myGameArea.stop()
+                            document.getElementById("myP").style.visibility = "visible";
                         }if(time <= 0){
                             myGameArea.stop()
+                            document.getElementById("myP").style.visibility = "visible";
                         }
                     }
                     for (i = 0; i < myHeart.length; i += 1) {
@@ -195,7 +197,7 @@
                     }
                     for (i = 0; i < myClock.length; i += 1) {
                         if (myGamePiece.crashWith(myClock[i])) {
-                            time += 1000
+                            time += 100
                             myClock = []
                             return;
                         }
@@ -207,6 +209,7 @@
                     myBackground.update();
                     myGamePiece.newPos();    
                     myGamePiece.update();
+                    myGameArea.frameNo1 -= 1;
                     myGameArea.frameNo += 1;
                     if (myGameArea.frameNo == 1 || everyinterval(33)) {
                     x = myGameArea.canvas.width;
@@ -243,8 +246,6 @@
                     for (i = 0; i < myObstacles.length; i += 1) {
                     myObstacles[i].x += -10;
                         myObstacles[i].update();
-                        score += 1
-                        time -= 1
                     }
                     for (i = 0; i < myHeart.length; i += 1) {
                     myHeart[i].x += -10;
@@ -254,11 +255,14 @@
                         myClock[i].x += -10;
                     myClock[i].update();
                     }
+
+                var timedown = time - myGameArea.frameNo
+
                 myHealth.text="HEALTH: " + health;
                 myHealth.update();
-                myScore.text="SCORE: " + score;
+                myScore.text="SCORE: " + myGameArea.frameNo;
                 myScore.update();
-                myTime.text="TIME: " + time;
+                myTime.text="TIME: " + timedown
                 myTime.update();
                 myGamePiece.newPos();    
                 myGamePiece.update();
@@ -280,6 +284,7 @@
                 myGamePiece.speedY = 0; 
             }
             function restart() {
+                document.getElementById("myP").style.visibility = "hidden";
                 myGameArea.stop();
                 myGameArea.clear();
                 myObstacles = [];
@@ -287,15 +292,16 @@
                 myClock = [];
                 health = 100;
                 score = 0;
-                time = 10000;
+                time = 1000;
                 startGame();
             }
+
         </script>
-        <button onmousedown="restart()">Restart</button><br>
+        <p id="myP"><button onmousedown="restart()">Restart</button><br></p>
         <h1>Controls:</h1><h1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h1><h1>How to play:</h1>
         <p>W- Upward&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                Dont hit the sides or enemies<br>S- Downward1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                Dont hit the sides or enemies<br>S- Downward&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <br>A- Left<br>D- Right</p>
 
     </body>
