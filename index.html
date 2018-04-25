@@ -183,11 +183,11 @@
                         }if(health <= 0){
                             myGameArea.stop()
                             document.getElementById("myP").style.visibility = "visible";
-                            document.getElementById("myImg").style.WebkitFilter = "grayscale(0%)"
+                            document.getElementById("main").style.WebkitFilter = "grayscale(0%)"
                         }if(time <= 0){
                             myGameArea.stop()
                             document.getElementById("myP").style.visibility = "visible";
-                            document.getElementById("myImg").style.WebkitFilter = "grayscale(0%)"
+                            document.getElementById("main").style.WebkitFilter = "grayscale(0%)"
                         }
                     }
                     for (i = 0; i < myHeart.length; i += 1) {
@@ -287,7 +287,7 @@
             }
             function restart() {
                 document.getElementById("myP").style.visibility = "hidden";
-                document.getElementById("myImg").style.WebkitFilter = "grayscale(0%)"
+                document.getElementById("main").style.WebkitFilter = "grayscale(0%)"
                 myGameArea.stop();
                 myGameArea.clear();
                 myObstacles = [];
