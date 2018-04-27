@@ -223,7 +223,7 @@
                         }if(time <= 0){
                             myGameArea.stop()
                             document.getElementById("myP").style.visibility = "visible";
-                            shrink()
+                            grow(0)
                             document.getElementById("main").style.WebkitFilter = "grayscale(100%)"
                         }
                     }
@@ -333,6 +333,7 @@
                 health = 100;
                 score = 0;
                 time = 1000;
+                shrink()
                 startGame();
             }
         </script>
