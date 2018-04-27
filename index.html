@@ -33,11 +33,31 @@
                 margin-right: auto;
                 display: block;
             }
+            #foo {
+                position: fixed;
+                right: 0;
+                left: 0;
+                top:0;
+                bottom: 0;
+                margin-left: auto;
+                margin-right: auto;
+                margin-top:auto;
+                margin-bottom:auto;
+                width: 0%;
+                height: 0%;
+                background-image: url("https://i.ebayimg.com/images/g/w~YAAOSw8HBZHJUZ/s-l300.jpg");
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+                width: 50%;
+            }
         </style>
         </head>
         <div id = "main">
         <body onload="startGame()">
         <body onload="restart()">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <div id="foo"></div>
         <body style="background-color:rgb(54, 72, 75);">
         <script>
             var myGamePiece;
@@ -164,17 +184,30 @@
                     if ((mybottom < othertop) || (mytop > otherbottom) || (myright < otherleft) || (myleft > otherright)) {
                         crash = false;
                     }
-                    return crash;
+                        return crash;
+                    }
                 }
-            }
-            function updateGameArea() {
-                myGameArea.clear();
-                myBackground.speedX = -1;
-                myBackground.newPos();    
-                myBackground.update();
-                myGamePiece.newPos();    
-                myGamePiece.update();
-            }
+                function updateGameArea() {
+                    myGameArea.clear();
+                    myBackground.speedX = -1;
+                    myBackground.newPos();    
+                    myBackground.update();
+                    myGamePiece.newPos();    
+                    myGamePiece.update();
+                }
+                grow = function (size) {
+                    if (size < 37) {
+                        console.log(size);
+                        $foo.css('width', size + '%');
+                        $foo.css('height', size + '%');
+                        size++;
+                        setTimeout(grow, 10, size);
+                        document.getElementById("foo").style.visibility = "visible";
+                    }
+                }
+                function shrink() {
+                    document.getElementById("foo").style.visibility = "hidden";
+                }
                 function updateGameArea() {
                     var x, height, gap, minHeight, maxHeight, minGap, maxGap;
                     for (i = 0; i < myObstacles.length; i += 1) {
@@ -185,10 +218,12 @@
                         }if(health <= 0){
                             myGameArea.stop()
                             document.getElementById("myP").style.visibility = "visible";
+                            grow(0)
                             document.getElementById("main").style.WebkitFilter = "grayscale(100%)"
                         }if(time <= 0){
                             myGameArea.stop()
                             document.getElementById("myP").style.visibility = "visible";
+                            shrink()
                             document.getElementById("main").style.WebkitFilter = "grayscale(100%)"
                         }
                     }
