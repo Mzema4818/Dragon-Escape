@@ -21,10 +21,31 @@
                margin-left: 5%;
             }
             button{
-                position:absolute; 
-                margin-left: 5%;
-                width: 150px;
-                bottom: 200px;
+                position:absolute;
+                transition: .5s ease;
+                top: 55%;
+                left: 48.8%;
+            }
+            .button {
+                display: inline-block;
+                padding: 15px 25px;
+                font-size: 14px;
+                cursor: pointer;
+                text-align: center;
+                text-decoration: none;
+                outline: none;
+                color: #fff;
+                background-color: #3e858e;
+                border: none;
+                border-radius: 15px;
+                box-shadow: 0 9px #999;
+            }
+            .button:hover {background-color: #3e858e}
+
+            .button:active {
+                background-color: #3e858e;
+                box-shadow: 0 5px #666;
+                transform: translateY(4px);
             }
             canvas {
                 padding-left: 0;
@@ -60,6 +81,7 @@
         <div id="foo"></div>
         <body style="background-color:rgb(54, 72, 75);">
         <script>
+            
             var myGamePiece;
             var myBackground;
             var myObstacles = [];
@@ -67,19 +89,17 @@
             var health = 100;
             var myScore;
             var myHealth;
-            var myTime;
-            var myClock = [];
-            var time = 1000;
+            ;
             var score = 0;
             function startGame() {
+                document.getElementById("myP").style.visibility = "hidden";
                 myGamePiece = new component(85, 85, "dragon.png", 300, 150, "image");
                 myBackground = new component(1500 , 565 , "background.jpg", 0, 0, "background");
-                myHealth = new component("30px", "Consolas", "black", 1250, 50, "text");
-                myScore = new component("30px", "Consolas", "black", 1250, 100, "text");
-                myTime = new component("30px", "Consolas", "black", 1250, 150, "text");
+                myScore = new component("30px", "Consolas", "black", 1250, 50, "text");
+                myHealth = new component("30px", "Consolas", "black", 1250, 100, "text");
+
                 myGameArea.start();
             }
-            window.addEventListener("keydown", checkKeyPress, false);
  
             var myGameArea = {
                 canvas : document.createElement("canvas"),
@@ -90,6 +110,13 @@
                     document.body.insertBefore(this.canvas, document.body.childNodes[0]);
                     this.frameNo = 0;
                     this.interval = setInterval(updateGameArea, 20);
+                    window.addEventListener('keydown', function (e) {
+                    myGameArea.keys = (myGameArea.keys || []);
+                    myGameArea.keys[e.keyCode] = (e.type == "keydown");
+                })
+                window.addEventListener('keyup', function (e) {
+                    myGameArea.keys[e.keyCode] = (e.type == "keydown");            
+                })
                     },
                 clear : function() {
                     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -187,18 +214,10 @@
                         return crash;
                     }
                 }
-                function updateGameArea() {
-                    myGameArea.clear();
-                    myBackground.speedX = -1;
-                    myBackground.newPos();    
-                    myBackground.update();
-                    myGamePiece.newPos();    
-                    myGamePiece.update();
-                }
                 var $foo = $('#foo');
             
                 grow = function (size) {
-                    if (size < 25) {
+                    if (size < 31) {
                         console.log(size);
                         $foo.css('width', size + '%');
                         $foo.css('height', size + '%');
@@ -211,6 +230,13 @@
                     document.getElementById("foo").style.visibility = "hidden";
                 }
                 function updateGameArea() {
+                    myGamePiece.speedX = 0;
+                    myGamePiece.speedY = 0;
+                    if (myGameArea.keys && myGameArea.keys[87]) {myGamePiece.speedY= -2; }
+                    if (myGameArea.keys && myGameArea.keys[83]) {myGamePiece.speedY = 2; }
+                    if (myGameArea.keys && myGameArea.keys[65]) {myGamePiece.speedX = -2; }
+                    if (myGameArea.keys && myGameArea.keys[68]) {myGamePiece.speedX = 2; }
+
                     var x, height, gap, minHeight, maxHeight, minGap, maxGap;
                     for (i = 0; i < myObstacles.length; i += 1) {
                         if (myGamePiece.crashWith(myObstacles[i])) {
@@ -222,24 +248,12 @@
                             document.getElementById("myP").style.visibility = "visible";
                             grow(0)
                             document.getElementById("main").style.WebkitFilter = "grayscale(100%)"
-                        }if(time <= 0){
-                            myGameArea.stop()
-                            document.getElementById("myP").style.visibility = "visible";
-                            grow(0)
-                            document.getElementById("main").style.WebkitFilter = "grayscale(100%)"
                         }
                     }
                     for (i = 0; i < myHeart.length; i += 1) {
                         if (myGamePiece.crashWith(myHeart[i])) {
                             health += 10
                             myHeart = []
-                            return;
-                        }
-                    }
-                    for (i = 0; i < myClock.length; i += 1) {
-                        if (myGamePiece.crashWith(myClock[i])) {
-                            time += 100
-                            myClock = []
                             return;
                         }
                     }
@@ -268,6 +282,22 @@
                         height2 = Math.floor(Math.random()*(maxHeight2-minHeight2+1)+minHeight2);
                         myObstacles.push(new component(40, 40, picture2, x, height2, "image"));
                     }
+                    if (myGameArea.frameNo == 1 || everyinterval(85)) {
+                    x = myGameArea.canvas.width;
+                        minHeight = 30;
+                        maxHeight = 545;
+                        var picture1 = "monster1.gif"
+                        height = Math.floor(Math.random()*(maxHeight-minHeight+1)+minHeight);
+                        myObstacles.push(new component(40, 40, "monster1.gif", x, height, "image"));
+                    }
+                    if (myGameArea.frameNo == 1 || everyinterval(94)) {
+                    x = myGameArea.canvas.width;
+                        minHeight2 = 30;
+                        maxHeight2 = 545;
+                        var picture2 = "monster2.gif"
+                        height2 = Math.floor(Math.random()*(maxHeight2-minHeight2+1)+minHeight2);
+                        myObstacles.push(new component(40, 40, picture2, x, height2, "image"));
+                    }
                     if (myGameArea.frameNo == 1 || everyinterval(151)) {
                     x = myGameArea.canvas.width;
                         minHeight3 = 30;
@@ -282,7 +312,6 @@
                         maxHeight4 = 545;
                         var picture4 = "clock.png"
                         height4 = Math.floor(Math.random()*(maxHeight4-minHeight4+1)+minHeight4);
-                        myClock.push(new component(20, 20, picture4, x, height4, "image"));
                     }
                     for (i = 0; i < myObstacles.length; i += 1) {
                     myObstacles[i].x += -10;
@@ -292,19 +321,10 @@
                     myHeart[i].x += -10;
                         myHeart[i].update();
                     }
-                    for (i = 0; i < myClock.length; i += 1) {
-                        myClock[i].x += -10;
-                    myClock[i].update();
-                    }
-
-                var timedown = time - myGameArea.frameNo
-
                 myHealth.text="HEALTH: " + health;
                 myHealth.update();
                 myScore.text="SCORE: " + myGameArea.frameNo;
                 myScore.update();
-                myTime.text="TIME: " + timedown
-                myTime.update();
                 myGamePiece.newPos();    
                 myGamePiece.update();
                 }
@@ -312,17 +332,10 @@
                 if ((myGameArea.frameNo / n) % 1 == 0) {return true;}
                 return false;
             }
-            function checkKeyPress(key) {
-                myGamePiece.image.src = "dragon.png";
-                if (key.keyCode == "87") {myGamePiece.speedY = -2; }
-                if (key.keyCode == "83") {myGamePiece.speedY = 2; }
-                if (key.keyCode == "65") {myGamePiece.speedX = -2; }
-                if (key.keyCode == "68") {myGamePiece.speedX = 2; }
-            }
             function clearmove() {
                 myGamePiece.image.src = "dragon.png";
                 myGamePiece.speedX = 0; 
-                myGamePiece.speedY = 0; 
+                myGamePiece.speedY = 0;      
             }
             function restart() {
                 document.getElementById("myP").style.visibility = "hidden";
@@ -331,21 +344,19 @@
                 myGameArea.clear();
                 myObstacles = [];
                 myHeart = [];
-                myClock = [];
                 health = 100;
                 score = 0;
-                time = 1000;
                 shrink()
                 startGame();
             }
         </script>
         </div>
-        <p id="myP"><button onmousedown="restart()">Restart</button><br></p>
         <h1>Controls:</h1><h1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h1><h1>How to play:</h1>
         <p>W- Upward&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                Dont hit the sides or enemies<br>S- Downward&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <br>A- Left<br>D- Right</p>
-
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        Dont hit the sides or enemies<br>S- Downward&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <br>A- Left<br>D- Right</p>
+        <p id="myP"><button class="button" onmousedown="restart()">Restart</button><br></p>
     </body>
 </html>
+
