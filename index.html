@@ -72,6 +72,9 @@
                 margin-right: auto;
                 width: 250%;
             }
+            image{
+                border-radius: 50%;
+            }
         </style>
         </head>
         <div id = "main">
@@ -139,7 +142,7 @@
                 this.x = x;
                 this.y = y;
                 this.gravitySpeed = 0;
-                this.gravity = 0;  
+                this.gravity = 0;
                 this.update = function() {
                     ctx = myGameArea.context;
                     ctx.fillStyle = color;
@@ -199,6 +202,12 @@
                 }
                 
                 this.crashWith = function(otherobj) {
+                    var distance = Math.sqrt(Math.pow(this.x + (this.width / 2) - otherobj.x - (otherobj.width / 2), 2) + 
+                    Math.pow(this.y + (this.height/ 2) - otherobj.y - (otherobj.height / 2), 2));
+                    if(distance < this.height / 2 + otherobj.height / 2 ) {
+                        return true;
+                    }
+                    return false;
                     var myleft = this.x;
                     var myright = this.x + (this.width);
                     var mytop = this.y;
@@ -359,4 +368,3 @@
         <p id="myP"><button class="button" onmousedown="restart()">Restart</button><br></p>
     </body>
 </html>
-
