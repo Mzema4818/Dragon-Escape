@@ -84,7 +84,6 @@
         <div id="foo"></div>
         <body style="background-color:rgb(54, 72, 75);">
         <script>
-            
             var myGamePiece;
             var myBackground;
             var myObstacles = [];
@@ -92,8 +91,9 @@
             var health = 100;
             var myScore;
             var myHealth;
-            ;
             var score = 0;
+            var speed = 0
+
             function startGame() {
                 document.getElementById("myP").style.visibility = "hidden";
                 myGamePiece = new component(85, 85, "dragon.png", 300, 150, "image");
@@ -275,6 +275,7 @@
                     myGamePiece.update();
                     myGameArea.frameNo1 -= 1;
                     myGameArea.frameNo += 1;
+                    
                     if (myGameArea.frameNo == 1 || everyinterval(33)) {
                     x = myGameArea.canvas.width;
                         minHeight = 30;
@@ -283,7 +284,7 @@
                         height = Math.floor(Math.random()*(maxHeight-minHeight+1)+minHeight);
                         myObstacles.push(new component(40, 40, "monster1.gif", x, height, "image"));
                     }
-                    if (myGameArea.frameNo == 1 || everyinterval(46)) {
+                    if (myGameArea.frameNo == -76 || everyinterval(46)) {
                     x = myGameArea.canvas.width;
                         minHeight2 = 30;
                         maxHeight2 = 545;
@@ -291,7 +292,7 @@
                         height2 = Math.floor(Math.random()*(maxHeight2-minHeight2+1)+minHeight2);
                         myObstacles.push(new component(40, 40, picture2, x, height2, "image"));
                     }
-                    if (myGameArea.frameNo == 1 || everyinterval(85)) {
+                    if (myGameArea.frameNo == -33 || everyinterval(85)) {
                     x = myGameArea.canvas.width;
                         minHeight = 30;
                         maxHeight = 545;
@@ -299,7 +300,7 @@
                         height = Math.floor(Math.random()*(maxHeight-minHeight+1)+minHeight);
                         myObstacles.push(new component(40, 40, "monster1.gif", x, height, "image"));
                     }
-                    if (myGameArea.frameNo == 1 || everyinterval(94)) {
+                    if (myGameArea.frameNo == 143 || everyinterval(94)) {
                     x = myGameArea.canvas.width;
                         minHeight2 = 30;
                         maxHeight2 = 545;
@@ -307,7 +308,7 @@
                         height2 = Math.floor(Math.random()*(maxHeight2-minHeight2+1)+minHeight2);
                         myObstacles.push(new component(40, 40, picture2, x, height2, "image"));
                     }
-                    if (myGameArea.frameNo == 1 || everyinterval(151)) {
+                    if (myGameArea.frameNo == 1 || everyinterval(250)) {
                     x = myGameArea.canvas.width;
                         minHeight3 = 30;
                         maxHeight3 = 545;
@@ -315,16 +316,14 @@
                         height3 = Math.floor(Math.random()*(maxHeight3-minHeight3+1)+minHeight3);
                         myHeart.push(new component(20, 20, picture3, x, height3, "image"));
                     }
-                    if (myGameArea.frameNo == 1 || everyinterval(76)) {
-                    x = myGameArea.canvas.width;
-                        minHeight4 = 30;
-                        maxHeight4 = 545;
-                        var picture4 = "clock.png"
-                        height4 = Math.floor(Math.random()*(maxHeight4-minHeight4+1)+minHeight4);
-                    }
                     for (i = 0; i < myObstacles.length; i += 1) {
-                    myObstacles[i].x += -10;
+                        myObstacles[i].x += -10;
                         myObstacles[i].update();
+                        if (myGameArea.frameNo >= 500 || everyinterval(500)){
+                        myObstacles[i].x += -0.5*(0.5 + myGameArea.frameNo/500)
+                        myObstacles[i].update();
+                        console.log(myObstacles[i])
+                    }
                     }
                     for (i = 0; i < myHeart.length; i += 1) {
                     myHeart[i].x += -10;
@@ -337,6 +336,7 @@
                 myGamePiece.newPos();    
                 myGamePiece.update();
                 }
+                
             function everyinterval(n) {
                 if ((myGameArea.frameNo / n) % 1 == 0) {return true;}
                 return false;
