@@ -78,7 +78,8 @@
         </style>
         </head>
         <div id = "main">
-        <body onload="startGame()">
+        <canvas id="canvas" width="1500" height="565"></canvas>
+        <button onclick="startGame()">Try it</button>
         <body onload="restart()">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <div id="foo"></div>
@@ -100,7 +101,6 @@
                 myBackground = new component(1500 , 565 , "background.jpg", 0, 0, "background");
                 myScore = new component("30px", "Consolas", "black", 1250, 50, "text");
                 myHealth = new component("30px", "Consolas", "black", 1250, 100, "text");
-
                 myGameArea.start();
             }
  
