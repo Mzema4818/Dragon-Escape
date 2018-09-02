@@ -86,8 +86,8 @@
                 </div>
             </div>
             <audio autoplay loop>
-                    <source src="hurt.wav">
-            </audio>
+                <source src="boss.mp3">
+              </audio>
             <body style="background-color:rgb(54, 72, 75);">
         <script>
             var myGamePiece;
@@ -105,7 +105,6 @@
             var clicking = document.getElementById("click");
 
             window.onload = function() {
-                
                 document.getElementById("myP").style.visibility = "hidden";
                 document.getElementById("mainMenu").style.visibility = "hidden";
                 document.getElementById("backButton").style.visibility = "hidden";
@@ -128,6 +127,8 @@
                 flying = new sound("flying.wav");
                 hitting = new sound("hurt.wav");
                 Gheart = new sound("Gheart.wav");
+                myMusic = new sound2("boss.mp3");
+                myMusic.play()
                 myGameArea.start();
             }
  
@@ -367,6 +368,21 @@
                     this.sound.pause();
                 }    
             }
+            function sound2(src) {
+                this.sound2 = document.createElement("audio");
+                this.sound2.src = src;
+                this.sound2.setAttribute("preload", "auto");
+                this.sound2.setAttribute("controls", "none");
+                this.sound2.setAttribute("loop", "auto");
+                this.sound2.style.display = "none";
+                document.body.appendChild(this.sound2);
+                this.play = function(){
+                    this.sound2.play();
+                }
+                this.stop = function(){
+                    this.sound2.pause();
+                }    
+            }
             function playAudio() { 
                 clicking.play(); 
             }    
@@ -380,6 +396,7 @@
                 myGamePiece.speedY = 0;      
             }
             function menu(){
+                myMusic.stop()
                 document.getElementById("myP").style.visibility = "hidden";
                 document.getElementById("mainMenu").style.visibility = "hidden";
                 document.getElementById("myButton").style.visibility = "visible";
@@ -422,6 +439,7 @@
                 ctx.drawImage(rules2, 850, 300); 
             }
             function restart() {
+                myMusic.stop()
                 document.getElementById("mainMenu").style.visibility = "hidden";
                 document.getElementById("myP").style.visibility = "hidden";
                 myGameArea.stop();
