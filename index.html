@@ -22,7 +22,6 @@
             }
             button{
                 position:absolute;
-                transition: .5s ease;
                 top: 55%;
                 left: 48.8%;
             }
@@ -48,8 +47,6 @@
                 transform: translateY(4px);
             }
             canvas {
-                background-image: url("background.jpg");
-                background-size:contain;
                 padding-left: 0;
                 padding-right: 0;
                 margin-left: auto;
@@ -80,9 +77,12 @@
         </style>
         </head>
         <div id = "main">
-        <canvas id="myCanvas" width="1500" height="565"><img src="logo.png"><img id="logo" src="logo.png"></canvas>
+        <canvas id="myCanvas" width="1500" height="690"><img src="logo.png"><img id="logo" src="logo.png"><img id="back" src="background.jpg"></canvas>
+        <div style="text-align:center;">
         <p id="myButton"><button class="button" onclick="startGame()">Play!</button></p>
+        <p id="mainMenu"><button class="button" style="float:right" onclick="menu2()">Back To Main Menu</button></p>
         <p id="myP"><button class="button" onmousedown="restart()">Restart</button><br></p>
+        </div>
         <body onload="restart()">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <div id="foo"></div> 
@@ -98,10 +98,15 @@
             var score = 0;
             var speed = 0
 
+
             window.onload = function() {
+                document.getElementById("myP").style.visibility = "hidden";
+                document.getElementById("mainMenu").style.visibility = "hidden";
                 var c = document.getElementById("myCanvas");
                 var ctx = c.getContext("2d");
                 var img = document.getElementById("logo");
+                var img2 = document.getElementById("back");
+                ctx.drawImage(img2, 0,0)
                 ctx.drawImage(img, 450, 200);
             }
 
@@ -109,7 +114,7 @@
                 document.getElementById("myP").style.visibility = "hidden";
                 document.getElementById("myButton").style.visibility = "hidden";
                 myGamePiece = new component(85, 85, "dragon.png", 300, 150, "image");
-                myBackground = new component(1500 , 565 , "background.jpg", 0, 0, "background");
+                myBackground = new component(1500 , 690 , "background.jpg", 0, 0, "background");
                 myScore = new component("30px", "Consolas", "black", 1250, 50, "text");
                 myHealth = new component("30px", "Consolas", "black", 1250, 100, "text");
                 myGameArea.start();
@@ -119,7 +124,7 @@
                 canvas : document.getElementById("myCanvas"),
                 start : function() {
                     this.canvas.width = 1500 ;
-                    this.canvas.height = 565 ;
+                    this.canvas.height = 690 ;
                     this.context = this.canvas.getContext("2d");
                     document.body.insertBefore(this.canvas, document.body.childNodes[0]);
                     this.frameNo = 0;
@@ -194,7 +199,7 @@
                 }
                 
                 this.hitBottom = function() {
-                var bottom = 485;
+                var bottom = 611;
                 var top = -5;
                 var right = 1417;
                 var left = 0;
@@ -268,6 +273,7 @@
                             myGameArea.stop()
                             document.getElementById("myP").style.visibility = "visible";
                             document.getElementById("myButton").style.visibility = "visible";
+                            document.getElementById("mainMenu").style.visibility = "visible";
                             grow(0)
                             document.getElementById("main").style.WebkitFilter = "grayscale(100%)"
                         }
@@ -292,7 +298,7 @@
                     if (myGameArea.frameNo == 1 || everyinterval(33)) {
                     x = myGameArea.canvas.width;
                         minHeight = 30;
-                        maxHeight = 545;
+                        maxHeight = 670;
                         var picture1 = "monster1.gif"
                         height = Math.floor(Math.random()*(maxHeight-minHeight+1)+minHeight);
                         myObstacles.push(new component(40, 40, "monster1.gif", x, height, "image"));
@@ -300,7 +306,7 @@
                     if (myGameArea.frameNo == -76 || everyinterval(46)) {
                     x = myGameArea.canvas.width;
                         minHeight2 = 30;
-                        maxHeight2 = 545;
+                        maxHeight2 = 670;
                         var picture2 = "monster2.gif"
                         height2 = Math.floor(Math.random()*(maxHeight2-minHeight2+1)+minHeight2);
                         myObstacles.push(new component(40, 40, picture2, x, height2, "image"));
@@ -308,7 +314,7 @@
                     if (myGameArea.frameNo == -33 || everyinterval(85)) {
                     x = myGameArea.canvas.width;
                         minHeight = 30;
-                        maxHeight = 545;
+                        maxHeight = 670;
                         var picture1 = "monster1.gif"
                         height = Math.floor(Math.random()*(maxHeight-minHeight+1)+minHeight);
                         myObstacles.push(new component(40, 40, "monster1.gif", x, height, "image"));
@@ -316,7 +322,7 @@
                     if (myGameArea.frameNo == 143 || everyinterval(94)) {
                     x = myGameArea.canvas.width;
                         minHeight2 = 30;
-                        maxHeight2 = 545;
+                        maxHeight2 = 670;
                         var picture2 = "monster2.gif"
                         height2 = Math.floor(Math.random()*(maxHeight2-minHeight2+1)+minHeight2);
                         myObstacles.push(new component(40, 40, picture2, x, height2, "image"));
@@ -324,7 +330,7 @@
                     if (myGameArea.frameNo == 1 || everyinterval(250)) {
                     x = myGameArea.canvas.width;
                         minHeight3 = 30;
-                        maxHeight3 = 545;
+                        maxHeight3 = 670;
                         var picture3 = "heart.png"
                         height3 = Math.floor(Math.random()*(maxHeight3-minHeight3+1)+minHeight3);
                         myHeart.push(new component(20, 20, picture3, x, height3, "image"));
@@ -359,7 +365,18 @@
                 myGamePiece.speedX = 0; 
                 myGamePiece.speedY = 0;      
             }
+            function menu2(){
+                document.getElementById("myP").style.visibility = "hidden";
+                document.getElementById("mainMenu").style.visibility = "hidden";
+                var c = document.getElementById("myCanvas");
+                var ctx = c.getContext("2d");
+                var img = document.getElementById("logo");
+                var img2 = document.getElementById("back");
+                ctx.drawImage(img2, 0, 0); 
+                ctx.drawImage(img, 450, 200); 
+            }
             function restart() {
+                document.getElementById("mainMenu").style.visibility = "visible";
                 document.getElementById("myP").style.visibility = "hidden";
                 document.getElementById("main").style.WebkitFilter = "grayscale(0%)"
                 myGameArea.stop();
@@ -373,10 +390,5 @@
             }
         </script>
         </div>
-        <h1>Controls:</h1><h1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h1><h1>How to play:</h1>
-        <p>W- Upward&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        Dont hit the sides or enemies<br>S- Downward&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <br>A- Left<br>D- Right</p>
     </body>
 </html>
