@@ -338,9 +338,8 @@
                         myObstacles[i].x += -10;
                         myObstacles[i].update();
                         if (myGameArea.frameNo >= 500 || everyinterval(500)){
-                        myObstacles[i].x += -0.5*(0.5 + myGameArea.frameNo/500)
+                        myObstacles[i].x += -1*(1 + myGameArea.frameNo/500)
                         myObstacles[i].update();
-                        console.log(myObstacles[i])
                     }
                     }
                     for (i = 0; i < myHeart.length; i += 1) {
