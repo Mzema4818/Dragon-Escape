@@ -48,6 +48,8 @@
                 transform: translateY(4px);
             }
             canvas {
+                background-image: url("background.jpg");
+                background-size:contain;
                 padding-left: 0;
                 padding-right: 0;
                 margin-left: auto;
@@ -78,11 +80,12 @@
         </style>
         </head>
         <div id = "main">
-        <canvas id="canvas" width="1500" height="565"></canvas>
-        <button onclick="startGame()">Try it</button>
+        <canvas id="myCanvas" width="1500" height="565"><img src="logo.png"><img id="logo" src="logo.png"></canvas>
+        <p id="myButton"><button class="button" onclick="startGame()">Play!</button></p>
+        <p id="myP"><button class="button" onmousedown="restart()">Restart</button><br></p>
         <body onload="restart()">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <div id="foo"></div>
+        <div id="foo"></div> 
         <body style="background-color:rgb(54, 72, 75);">
         <script>
             var myGamePiece;
@@ -95,8 +98,16 @@
             var score = 0;
             var speed = 0
 
+            window.onload = function() {
+                var c = document.getElementById("myCanvas");
+                var ctx = c.getContext("2d");
+                var img = document.getElementById("logo");
+                ctx.drawImage(img, 450, 200);
+            }
+
             function startGame() {
                 document.getElementById("myP").style.visibility = "hidden";
+                document.getElementById("myButton").style.visibility = "hidden";
                 myGamePiece = new component(85, 85, "dragon.png", 300, 150, "image");
                 myBackground = new component(1500 , 565 , "background.jpg", 0, 0, "background");
                 myScore = new component("30px", "Consolas", "black", 1250, 50, "text");
@@ -105,7 +116,7 @@
             }
  
             var myGameArea = {
-                canvas : document.createElement("canvas"),
+                canvas : document.getElementById("myCanvas"),
                 start : function() {
                     this.canvas.width = 1500 ;
                     this.canvas.height = 565 ;
@@ -145,6 +156,8 @@
                 this.gravity = 0;
                 this.update = function() {
                     ctx = myGameArea.context;
+                    var c = document.getElementById("myCanvas");
+                    var ctx = c.getContext("2d");
                     ctx.fillStyle = color;
                     if (this.type == "text") {
                         ctx.font = this.width + " " + this.height;
@@ -167,7 +180,6 @@
                         ctx.fillRect(this.x, this.y, this.width, this.height);
                     }
                     
-        
                 }
                 this.newPos = function() {
                     this.x += this.speedX;
@@ -255,6 +267,7 @@
                         }if(health <= 0){
                             myGameArea.stop()
                             document.getElementById("myP").style.visibility = "visible";
+                            document.getElementById("myButton").style.visibility = "visible";
                             grow(0)
                             document.getElementById("main").style.WebkitFilter = "grayscale(100%)"
                         }
@@ -365,6 +378,5 @@
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         Dont hit the sides or enemies<br>S- Downward&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <br>A- Left<br>D- Right</p>
-        <p id="myP"><button class="button" onmousedown="restart()">Restart</button><br></p>
     </body>
 </html>
