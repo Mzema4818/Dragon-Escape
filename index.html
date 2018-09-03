@@ -85,370 +85,374 @@
                 </div>
                 </div>
             </div>
-            <audio autoplay loop>
-                <source src="boss.mp3">
-              </audio>
+            
             <body style="background-color:rgb(54, 72, 75);">
+                <audio autoplay loop>
+                <source src="boss.mp3" type="audio/mpeg">
+              </audio>
+            </body>
         <script>
-            var myGamePiece;
-            var myBackground;
-            var myObstacles = [];
-            var myHeart = [];
-            var health = 100;
-            var myScore;
-            var myHealth;
-            var score = 0;
-            var flying;
-            var hitting;
-            var Gheart;
-            var myMusic;
-            var clicking = document.getElementById("click");
+              
+          var myGamePiece;
+          var myBackground;
+          var myObstacles = [];
+          var myHeart = [];
+          var health = 100;
+          var myScore;
+          var myHealth;
+          var score = 0;
+          var flying;
+          var hitting;
+          var Gheart;
+          var myMusic;
+          var clicking = document.getElementById("click");
 
-            window.onload = function() {
-                document.getElementById("myP").style.visibility = "hidden";
-                document.getElementById("mainMenu").style.visibility = "hidden";
-                document.getElementById("backButton").style.visibility = "hidden";
-                var c = document.getElementById("myCanvas");
-                var ctx = c.getContext("2d");
-                var img = document.getElementById("logo");
-                var img2 = document.getElementById("back");
-                ctx.drawImage(img2, 0,0)
-                ctx.drawImage(img, 450, 200);
+          window.onload = function() {
+            document.getElementById("myP").style.visibility = "hidden";
+            document.getElementById("mainMenu").style.visibility = "hidden";
+            document.getElementById("backButton").style.visibility = "hidden";
+            var c = document.getElementById("myCanvas");
+            var ctx = c.getContext("2d");
+            var img = document.getElementById("logo");
+            var img2 = document.getElementById("back");
+            ctx.drawImage(img2, 0,0);
+            ctx.drawImage(img, 450, 200);
+          };
+
+          function startGame() {
+            document.getElementById("myP").style.visibility = "hidden";
+            document.getElementById("myRules").style.visibility = "hidden";
+            document.getElementById("myButton").style.visibility = "hidden";
+            myGamePiece = new component(85, 85, "dragon.png", 300, 150, "image");
+            myBackground = new component(1500 , 645 , "background.jpg", 0, 0, "background");
+            myScore = new component("30px", "Consolas", "black", 1250, 50, "text");
+            myHealth = new component("30px", "Consolas", "black", 1250, 100, "text");
+            flying = new sound("flying.wav");
+            hitting = new sound("hurt.wav");
+            Gheart = new sound("Gheart.wav");
+            myMusic = new sound2("boss.mp3");
+            myMusic.play();
+            myGameArea.start();
+          }
+
+          var myGameArea = {
+            canvas : document.getElementById("myCanvas"),
+            start : function() {
+              this.canvas.width = 1500 ;
+              this.canvas.height = 645 ;
+              this.context = this.canvas.getContext("2d");
+              document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+              this.frameNo = 0;
+              this.interval = setInterval(updateGameArea, 20);
+              window.addEventListener('keydown', function (e) {
+                myGameArea.keys = (myGameArea.keys || []);
+                myGameArea.keys[e.keyCode] = (e.type == "keydown");
+              });
+              window.addEventListener('keyup', function (e) {
+                myGameArea.keys[e.keyCode] = (e.type == "keydown");            
+              });
+            },
+            clear : function() {
+              this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            },
+            stop : function() {
+              clearInterval(this.interval);
             }
+          };
+          function component(width, height, color, x, y, type) {
+            this.type = type;
+            if (type == "image" || type == "background") {
+              this.image = new Image();
+              this.image.src = color;
+            }
+            this.bounce= 0;
+            this.width = width;
+            this.height = height;
+            this.speedX = 0;
+            this.speedY = 0;    
+            this.x = x;
+            this.y = y;
+            this.gravitySpeed = 0;
+            this.gravity = 0;
+            this.update = function() {
+              ctx = myGameArea.context;
+              var c = document.getElementById("myCanvas");
+              var ctx = c.getContext("2d");
+              ctx.fillStyle = color;
+              if (this.type == "text") {
+                ctx.font = this.width + " " + this.height;
+                ctx.fillStyle = color;
+                ctx.fillText(this.text, this.x, this.y);
+              }
+              if (type == "image" || type == "background") {
+                ctx.drawImage(this.image, 
+                              this.x, 
+                              this.y,
+                              this.width, this.height);
+                if (type == "background") {
+                  ctx.drawImage(this.image, 
+                                this.x + this.width, 
+                                this.y,
+                                this.width, this.height);
+                }
+              } else {
+                ctx.fillStyle = color;
+                ctx.fillRect(this.x, this.y, this.width, this.height);
+              }
+            };
+            this.newPos = function() {
+              this.x += this.speedX;
+              this.y += this.speedY;
+              this.gravitySpeed += this.gravity;
+              this.hitBottom();
+              if (this.type == "background") {
+                if (this.x == -(this.width)) {
+                  this.x = 0;
+                }
+              }
+            };
 
-            function startGame() {
-                document.getElementById("myP").style.visibility = "hidden";
-                document.getElementById("myRules").style.visibility = "hidden";
-                document.getElementById("myButton").style.visibility = "hidden";
+            this.hitBottom = function() {
+              var bottom = 568;
+              var top = -5;
+              var right = 1417;
+              var left = 0;
+              if (this.y > bottom) {
+                this.y = bottom;
+                health -= 30;
+                hitting.play();
                 myGamePiece = new component(85, 85, "dragon.png", 300, 150, "image");
-                myBackground = new component(1500 , 645 , "background.jpg", 0, 0, "background");
-                myScore = new component("30px", "Consolas", "black", 1250, 50, "text");
-                myHealth = new component("30px", "Consolas", "black", 1250, 100, "text");
-                flying = new sound("flying.wav");
-                hitting = new sound("hurt.wav");
-                Gheart = new sound("Gheart.wav");
-                myMusic = new sound2("boss.mp3");
-                myMusic.play()
-                myGameArea.start();
-            }
- 
-            var myGameArea = {
-                canvas : document.getElementById("myCanvas"),
-                start : function() {
-                    this.canvas.width = 1500 ;
-                    this.canvas.height = 645 ;
-                    this.context = this.canvas.getContext("2d");
-                    document.body.insertBefore(this.canvas, document.body.childNodes[0]);
-                    this.frameNo = 0;
-                    this.interval = setInterval(updateGameArea, 20);
-                    window.addEventListener('keydown', function (e) {
-                    myGameArea.keys = (myGameArea.keys || []);
-                    myGameArea.keys[e.keyCode] = (e.type == "keydown");
-                })
-                window.addEventListener('keyup', function (e) {
-                    myGameArea.keys[e.keyCode] = (e.type == "keydown");            
-                })
-                    },
-                clear : function() {
-                    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-                },
-                stop : function() {
-                    clearInterval(this.interval);
-                }
-            }
-            function component(width, height, color, x, y, type) {
-                this.type = type;
-                if (type == "image" || type == "background") {
-                    this.image = new Image();
-                    this.image.src = color;
-                }
-                this.bounce= 0;
-                this.width = width;
-                this.height = height;
-                this.speedX = 0;
-                this.speedY = 0;    
-                this.x = x;
-                this.y = y;
-                this.gravitySpeed = 0;
-                this.gravity = 0;
-                this.update = function() {
-                    ctx = myGameArea.context;
-                    var c = document.getElementById("myCanvas");
-                    var ctx = c.getContext("2d");
-                    ctx.fillStyle = color;
-                    if (this.type == "text") {
-                        ctx.font = this.width + " " + this.height;
-                        ctx.fillStyle = color;
-                        ctx.fillText(this.text, this.x, this.y);
-                    }
-                    if (type == "image" || type == "background") {
-                        ctx.drawImage(this.image, 
-                            this.x, 
-                            this.y,
-                            this.width, this.height);
-                    if (type == "background") {
-                        ctx.drawImage(this.image, 
-                            this.x + this.width, 
-                            this.y,
-                            this.width, this.height);
-                    }
-                    } else {
-                        ctx.fillStyle = color;
-                        ctx.fillRect(this.x, this.y, this.width, this.height);
-                    }
-                    
-                }
-                this.newPos = function() {
-                    this.x += this.speedX;
-                    this.y += this.speedY;
-                    this.gravitySpeed += this.gravity;
-                    this.hitBottom();
-                    if (this.type == "background") {
-                        if (this.x == -(this.width)) {
-                        this.x = 0;
-                        }
-                    }
-                }
-                
-                this.hitBottom = function() {
-                var bottom = 568;
-                var top = -5;
-                var right = 1417;
-                var left = 0;
-                    if (this.y > bottom) {
-                        this.y = bottom;
-                        health -= 30
-                        hitting.play()
-                        myGamePiece = new component(85, 85, "dragon.png", 300, 150, "image")
-                    }if (this.y < top) {
-                        this.y = top;
-                        health -= 30
-                        hitting.play()
-                        myGamePiece = new component(85, 85, "dragon.png", 300, 150, "image")
-                    }if (this.x > right) {
-                        this.x = right;
-                        health -= 30
-                        hitting.play()
-                        myGamePiece = new component(85, 85, "dragon.png", 300, 150, "image")
-                }
-                }
-                
-                this.crashWith = function(otherobj) {
-                    var distance = Math.sqrt(Math.pow(this.x + (this.width / 2) - otherobj.x - (otherobj.width / 2), 2) + 
-                    Math.pow(this.y + (this.height/ 2) - otherobj.y - (otherobj.height / 2), 2));
-                    if(distance < this.height / 2 + otherobj.height / 2 ) {
-                        return true;
-                    }
-                    return false;
-                    var myleft = this.x;
-                    var myright = this.x + (this.width);
-                    var mytop = this.y;
-                    var mybottom = this.y + (this.height);
-                    var otherleft = otherobj.x;
-                    var otherright = otherobj.x + (otherobj.width);
-                    var othertop = otherobj.y;
-                    var otherbottom = otherobj.y + (otherobj.height);
-                    var crash = true;
-                    if ((mybottom < othertop) || (mytop > otherbottom) || (myright < otherleft) || (myleft > otherright)) {
-                        crash = false;
-                    }
-                        return crash;
-                    }
-                }
-                function updateGameArea() {
-                    myGamePiece.speedX = 0;
-                    myGamePiece.speedY = 0;
-                    if (myGameArea.keys && myGameArea.keys[87]) {myGamePiece.speedY= -2; flying.play(); }
-                    if (myGameArea.keys && myGameArea.keys[83]) {myGamePiece.speedY = 2; flying.play();}
-                    if (myGameArea.keys && myGameArea.keys[65]) {myGamePiece.speedX = -2; flying.play();}
-                    if (myGameArea.keys && myGameArea.keys[68]) {myGamePiece.speedX = 2; flying.play();}
+              }if (this.y < top) {
+                this.y = top;
+                health -= 30;
+                hitting.play();
+                myGamePiece = new component(85, 85, "dragon.png", 300, 150, "image");
+              }if (this.x > right) {
+                this.x = right;
+                health -= 30;
+                hitting.play();
+                myGamePiece = new component(85, 85, "dragon.png", 300, 150, "image");
+              }
+            };
 
-                    var x, height, gap, minHeight, maxHeight, minGap, maxGap;
-                    for (i = 0; i < myObstacles.length; i += 1) {
-                        if (myGamePiece.crashWith(myObstacles[i])) {
-                            health -= 20
-                            hitting.play()
-                            myObstacles = []
-                            return;
-                        }if(health <= 0){
-                            myGameArea.stop()
-                            document.getElementById("myP").style.visibility = "visible";
-                            document.getElementById("mainMenu").style.visibility = "visible";
-                        }
-                    }
-                    for (i = 0; i < myHeart.length; i += 1) {
-                        if (myGamePiece.crashWith(myHeart[i])) {
-                            health += 10
-                            Gheart.play()
-                            myHeart = []
-                            return;
-                        }
-                    }
-                    myGameArea.clear();
-                    myGameArea.clear();
-                    myBackground.speedX = -5;
-                    myBackground.newPos();    
-                    myBackground.update();
-                    myGamePiece.newPos();    
-                    myGamePiece.update();
-                    myGameArea.frameNo1 -= 1;
-                    myGameArea.frameNo += 1;
-                    
-                    if (myGameArea.frameNo == 1 || everyinterval(33)) {
-                    x = myGameArea.canvas.width;
-                        minHeight = 30;
-                        maxHeight = 615;
-                        var picture1 = "monster1.gif"
-                        height = Math.floor(Math.random()*(maxHeight-minHeight+1)+minHeight);
-                        myObstacles.push(new component(40, 40, "monster1.gif", x, height, "image"));
-                    }
-                    if (myGameArea.frameNo == -76 || everyinterval(46)) {
-                    x = myGameArea.canvas.width;
-                        minHeight2 = 30;
-                        maxHeight2 = 615;
-                        var picture2 = "monster2.gif"
-                        height2 = Math.floor(Math.random()*(maxHeight2-minHeight2+1)+minHeight2);
-                        myObstacles.push(new component(40, 40, picture2, x, height2, "image"));
-                    }
-                    if (myGameArea.frameNo == -33 || everyinterval(85)) {
-                    x = myGameArea.canvas.width;
-                        minHeight = 30;
-                        maxHeight = 615;
-                        var picture1 = "monster1.gif"
-                        height = Math.floor(Math.random()*(maxHeight-minHeight+1)+minHeight);
-                        myObstacles.push(new component(40, 40, "monster1.gif", x, height, "image"));
-                    }
-                    if (myGameArea.frameNo == 143 || everyinterval(94)) {
-                    x = myGameArea.canvas.width;
-                        minHeight2 = 30;
-                        maxHeight2 = 615;
-                        var picture2 = "monster2.gif"
-                        height2 = Math.floor(Math.random()*(maxHeight2-minHeight2+1)+minHeight2);
-                        myObstacles.push(new component(40, 40, picture2, x, height2, "image"));
-                    }
-                    if (myGameArea.frameNo == 1 || everyinterval(250)) {
-                    x = myGameArea.canvas.width;
-                        minHeight3 = 30;
-                        maxHeight3 = 615;
-                        var picture3 = "heart.png"
-                        height3 = Math.floor(Math.random()*(maxHeight3-minHeight3+1)+minHeight3);
-                        myHeart.push(new component(20, 20, picture3, x, height3, "image"));
-                    }
-                    for (i = 0; i < myObstacles.length; i += 1) {
-                        myObstacles[i].x += -10;
-                        myObstacles[i].update();
-                        if (myGameArea.frameNo >= 500 || everyinterval(500)){
-                        myObstacles[i].x += -1*(1 + myGameArea.frameNo/500)
-                        myObstacles[i].update();
-                    }
-                    }
-                    for (i = 0; i < myHeart.length; i += 1) {
-                    myHeart[i].x += -10;
-                        myHeart[i].update();
-                    }
-                myHealth.text="HEALTH: " + health;
-                myHealth.update();
-                myScore.text="SCORE: " + myGameArea.frameNo;
-                myScore.update();
-                myGamePiece.newPos();    
-                myGamePiece.update();
-                }
-            function sound(src) {
-                this.sound = document.createElement("audio");
-                this.sound.src = src;
-                this.sound.setAttribute("preload", "auto");
-                this.sound.setAttribute("controls", "none");
-                this.sound.style.display = "none";
-                document.body.appendChild(this.sound);
-                this.play = function(){
-                    this.sound.play();
-                }
-                this.stop = function(){
-                    this.sound.pause();
-                }    
-            }
-            function sound2(src) {
-                this.sound2 = document.createElement("audio");
-                this.sound2.src = src;
-                this.sound2.setAttribute("preload", "auto");
-                this.sound2.setAttribute("controls", "none");
-                this.sound2.setAttribute("loop", "auto");
-                this.sound2.style.display = "none";
-                document.body.appendChild(this.sound2);
-                this.play = function(){
-                    this.sound2.play();
-                }
-                this.stop = function(){
-                    this.sound2.pause();
-                }    
-            }
-            function playAudio() { 
-                clicking.play(); 
-            }    
-            function everyinterval(n) {
-                if ((myGameArea.frameNo / n) % 1 == 0) {return true;}
-                return false;
-            }
-            function clearmove() {
-                myGamePiece.image.src = "dragon.png";
-                myGamePiece.speedX = 0; 
-                myGamePiece.speedY = 0;      
-            }
-            function menu(){
-                myMusic.stop()
-                document.getElementById("myP").style.visibility = "hidden";
-                document.getElementById("mainMenu").style.visibility = "hidden";
-                document.getElementById("myButton").style.visibility = "visible";
-                document.getElementById("myRules").style.visibility = "visible";
-                var c = document.getElementById("myCanvas");
-                var ctx = c.getContext("2d");
-                var img = document.getElementById("logo");
-                var img2 = document.getElementById("back");
-                ctx.drawImage(img2, 0, 0); 
-                ctx.drawImage(img, 450, 200); 
-            }
-            function back(){
-                document.getElementById("myP").style.visibility = "hidden";
-                document.getElementById("mainMenu").style.visibility = "hidden";
-                document.getElementById("myButton").style.visibility = "visible";
-                document.getElementById("myRules").style.visibility = "visible";
-                document.getElementById("backButton").style.visibility = "hidden";
-                var c = document.getElementById("myCanvas");
-                var ctx = c.getContext("2d");
-                var img = document.getElementById("logo");
-                var img2 = document.getElementById("back");
-                ctx.drawImage(img2, 0, 0); 
-                ctx.drawImage(img, 450, 200); 
-            }
-            function rules(){
-                document.getElementById("myP").style.visibility = "hidden";
-                document.getElementById("mainMenu").style.visibility = "hidden";
-                document.getElementById("myButton").style.visibility = "hidden";
-                document.getElementById("myRules").style.visibility = "hidden";
-                document.getElementById("backButton").style.visibility = "visible";
-                var c = document.getElementById("myCanvas");
-                var ctx = c.getContext("2d");
-                var img = document.getElementById("logo2");
-                var img2 = document.getElementById("back");
-                var rules1 = document.getElementById("rules1");
-                var rules2 = document.getElementById("rules2");
-                ctx.drawImage(img2, 0, 0); 
-                ctx.drawImage(img, 635, 200);
-                ctx.drawImage(rules1, 500, 300); 
-                ctx.drawImage(rules2, 850, 300); 
-            }
-            function restart() {
-                myMusic.stop()
-                document.getElementById("mainMenu").style.visibility = "hidden";
-                document.getElementById("myP").style.visibility = "hidden";
-                myGameArea.stop();
-                myGameArea.clear();
+            this.crashWith = function(otherobj) {
+              var distance = Math.sqrt(Math.pow(this.x + (this.width / 2) - otherobj.x - (otherobj.width / 2), 2) + 
+                                       Math.pow(this.y + (this.height/ 2) - otherobj.y - (otherobj.height / 2), 2));
+              if(distance < this.height / 2 + otherobj.height / 2 ) {
+                return true;
+              }
+              return false;
+              var myleft = this.x;
+              var myright = this.x + (this.width);
+              var mytop = this.y;
+              var mybottom = this.y + (this.height);
+              var otherleft = otherobj.x;
+              var otherright = otherobj.x + (otherobj.width);
+              var othertop = otherobj.y;
+              var otherbottom = otherobj.y + (otherobj.height);
+              var crash = true;
+              if ((mybottom < othertop) || (mytop > otherbottom) || (myright < otherleft) || (myleft > otherright)) {
+                crash = false;
+              }
+              return crash;
+            };
+          }
+          function updateGameArea() {
+            myGamePiece.speedX = 0;
+            myGamePiece.speedY = 0;
+            if (myGameArea.keys && myGameArea.keys[87]) {myGamePiece.speedY= -2; flying.play(); }
+            if (myGameArea.keys && myGameArea.keys[83]) {myGamePiece.speedY = 2; flying.play();}
+            if (myGameArea.keys && myGameArea.keys[65]) {myGamePiece.speedX = -2; flying.play();}
+            if (myGameArea.keys && myGameArea.keys[68]) {myGamePiece.speedX = 2; flying.play();}
+
+            var x, height, gap, minHeight, maxHeight, minGap, maxGap;
+            for (i = 0; i < myObstacles.length; i += 1) {
+              if (myGamePiece.crashWith(myObstacles[i])) {
+                health -= 20;
+                hitting.play();
                 myObstacles = [];
-                myHeart = [];
-                health = 100;
-                score = 0;
-                startGame();
+                return;
+              }if(health <= 0){
+                myGameArea.stop();
+                document.getElementById("myP").style.visibility = "visible";
+                document.getElementById("mainMenu").style.visibility = "visible";
+              }
             }
+            for (i = 0; i < myHeart.length; i += 1) {
+              if (myGamePiece.crashWith(myHeart[i])) {
+                health += 10;
+                Gheart.play();
+                myHeart = [];
+                return;
+              }
+            }
+            myGameArea.clear();
+            myGameArea.clear();
+            myBackground.speedX = -5;
+            myBackground.newPos();    
+            myBackground.update();
+            myGamePiece.newPos();    
+            myGamePiece.update();
+            myGameArea.frameNo1 -= 1;
+            myGameArea.frameNo += 1;
+
+            if (myGameArea.frameNo == 1 || everyinterval(33)) {
+              x = myGameArea.canvas.width;
+              minHeight = 30;
+              maxHeight = 615;
+              var picture1 = "monster1.gif";
+              height = Math.floor(Math.random()*(maxHeight-minHeight+1)+minHeight);
+              myObstacles.push(new component(40, 40, "monster1.gif", x, height, "image"));
+            }
+            if (myGameArea.frameNo == -76 || everyinterval(46)) {
+              x = myGameArea.canvas.width;
+              minHeight2 = 30;
+              maxHeight2 = 615;
+              var picture2 = "monster2.gif";
+              height2 = Math.floor(Math.random()*(maxHeight2-minHeight2+1)+minHeight2);
+              myObstacles.push(new component(40, 40, picture2, x, height2, "image"));
+            }
+            if (myGameArea.frameNo == -33 || everyinterval(85)) {
+              x = myGameArea.canvas.width;
+              minHeight = 30;
+              maxHeight = 615;
+              var picture1 = "monster1.gif";
+              height = Math.floor(Math.random()*(maxHeight-minHeight+1)+minHeight);
+              myObstacles.push(new component(40, 40, "monster1.gif", x, height, "image"));
+            }
+            if (myGameArea.frameNo == 143 || everyinterval(94)) {
+              x = myGameArea.canvas.width;
+              minHeight2 = 30;
+              maxHeight2 = 615;
+              var picture2 = "monster2.gif";
+              height2 = Math.floor(Math.random()*(maxHeight2-minHeight2+1)+minHeight2);
+              myObstacles.push(new component(40, 40, picture2, x, height2, "image"));
+            }
+            if (myGameArea.frameNo == 1 || everyinterval(250)) {
+              x = myGameArea.canvas.width;
+              minHeight3 = 30;
+              maxHeight3 = 615;
+              var picture3 = "heart.png";
+              height3 = Math.floor(Math.random()*(maxHeight3-minHeight3+1)+minHeight3);
+              myHeart.push(new component(20, 20, picture3, x, height3, "image"));
+            }
+            for (i = 0; i < myObstacles.length; i += 1) {
+              myObstacles[i].x += -10;
+              myObstacles[i].update();
+              if (myGameArea.frameNo >= 500 || everyinterval(500)){
+                myObstacles[i].x += -1*(1 + myGameArea.frameNo/500);
+                myObstacles[i].update();
+              }
+            }
+            for (i = 0; i < myHeart.length; i += 1) {
+              myHeart[i].x += -10;
+              myHeart[i].update();
+            }
+            myHealth.text="HEALTH: " + health;
+            myHealth.update();
+            myScore.text="SCORE: " + myGameArea.frameNo;
+            myScore.update();
+            myGamePiece.newPos();    
+            myGamePiece.update();
+          }
+          function sound(src) {
+            this.sound = document.createElement("audio");
+            this.sound.src = src;
+            this.sound.setAttribute("preload", "auto");
+            this.sound.setAttribute("controls", "none");
+            this.sound.style.display = "none";
+            document.body.appendChild(this.sound);
+            this.play = function(){
+              this.sound.play();
+            };
+            this.stop = function(){
+              this.sound.pause();
+            };
+          }
+          function sound2(src) {
+            this.sound2 = document.createElement("audio");
+            this.sound2.src = src;
+            this.sound2.setAttribute("preload", "auto");
+            this.sound2.setAttribute("controls", "none");
+            this.sound2.setAttribute("loop", "auto");
+            this.sound2.style.display = "none";
+            document.body.appendChild(this.sound2);
+            this.play = function(){
+              this.sound2.play();
+            };
+            this.stop = function(){
+              this.sound2.pause();
+            };
+          }
+          function playAudio() { 
+            clicking.play(); 
+          }    
+          function everyinterval(n) {
+            if ((myGameArea.frameNo / n) % 1 == 0) {return true;}
+            return false;
+          }
+          function clearmove() {
+            myGamePiece.image.src = "dragon.png";
+            myGamePiece.speedX = 0; 
+            myGamePiece.speedY = 0;      
+          }
+          function menu(){
+            myMusic.stop();
+            document.getElementById("myP").style.visibility = "hidden";
+            document.getElementById("mainMenu").style.visibility = "hidden";
+            document.getElementById("myButton").style.visibility = "visible";
+            document.getElementById("myRules").style.visibility = "visible";
+            var c = document.getElementById("myCanvas");
+            var ctx = c.getContext("2d");
+            var img = document.getElementById("logo");
+            var img2 = document.getElementById("back");
+            ctx.drawImage(img2, 0, 0); 
+            ctx.drawImage(img, 450, 200); 
+          }
+          function back(){
+            document.getElementById("myP").style.visibility = "hidden";
+            document.getElementById("mainMenu").style.visibility = "hidden";
+            document.getElementById("myButton").style.visibility = "visible";
+            document.getElementById("myRules").style.visibility = "visible";
+            document.getElementById("backButton").style.visibility = "hidden";
+            var c = document.getElementById("myCanvas");
+            var ctx = c.getContext("2d");
+            var img = document.getElementById("logo");
+            var img2 = document.getElementById("back");
+            ctx.drawImage(img2, 0, 0); 
+            ctx.drawImage(img, 450, 200); 
+          }
+          function rules(){
+            document.getElementById("myP").style.visibility = "hidden";
+            document.getElementById("mainMenu").style.visibility = "hidden";
+            document.getElementById("myButton").style.visibility = "hidden";
+            document.getElementById("myRules").style.visibility = "hidden";
+            document.getElementById("backButton").style.visibility = "visible";
+            var c = document.getElementById("myCanvas");
+            var ctx = c.getContext("2d");
+            var img = document.getElementById("logo2");
+            var img2 = document.getElementById("back");
+            var rules1 = document.getElementById("rules1");
+            var rules2 = document.getElementById("rules2");
+            ctx.drawImage(img2, 0, 0); 
+            ctx.drawImage(img, 635, 200);
+            ctx.drawImage(rules1, 500, 300); 
+            ctx.drawImage(rules2, 850, 300); 
+          }
+          function restart() {
+            myMusic.stop();
+            document.getElementById("mainMenu").style.visibility = "hidden";
+            document.getElementById("myP").style.visibility = "hidden";
+            myGameArea.stop();
+            myGameArea.clear();
+            myObstacles = [];
+            myHeart = [];
+            health = 100;
+            score = 0;
+            startGame();
+          }
+
+
         </script>
         </div>   
     </body>
