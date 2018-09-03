@@ -94,11 +94,6 @@
                  </div>
                         
         <script>
-            
-            $(document).ready(function() {
-                $('.bgmusic').on('canplay', function() {
-                    this.play();
-            });
               
           var myGamePiece;
           var myBackground;
@@ -462,5 +457,12 @@
 
         </script>
         </div>   
+                        
+        <script>
+            $(document).ready(function() {
+                $('.bgmusic').on('canplay', function() {
+                    this.play();
+            });
+        </script>
     </body>
 </html>
