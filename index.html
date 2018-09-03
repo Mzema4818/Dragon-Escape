@@ -2,6 +2,10 @@
 <html>
     <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <title>Dragon Escape</title>
         <style>
             canvas {
@@ -50,43 +54,40 @@
                 border-radius: 50%;
             }
         </style>
-        </head>
-            <meta name="viewport" content="width=device-width, initial-scale=1">
-            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-            <div id = "main">
-            <audio id="click">
-                <source src="clicking.wav" type="audio/wav">
-            </audio>
-            <canvas id="myCanvas" width="1500" height="645"><img id="logo" src="logo.png"><img id="logo2" src="logo2.png"><img id="rules1" src="rules1.png"><img id="rules2" src="rules2.png"><img id="back" src="background.jpg"></canvas>
-            <div class="container">
-                <div class="row">
-                <div class="col-sm-6">
-                    <p id="backButton"><button class="button" onclick="back(),playAudio()">Back!</button></p>
-                </div>
-            <div class="container">
-                <div class="row">
-                <div class="col-sm-6">
-                    <p id="myButton"><button class="button" onclick="startGame(),playAudio(),restart()">Play!</button></p>
-                </div>
-                <div class="col-sm-6">
-                    <p id="myRules"><button class="button" onclick="rules(),playAudio()">Rules!</button></p>
-                </div>
-                </div>
-            </div>
-            <div class="container">
-                <div class="row">
-                <div class="col-sm-6">
-                    <p id="mainMenu"><button class="button" onclick="menu(),playAudio()">Back To Main Menu</button></p>
-                </div>
-                <div class="col-sm-6">
-                    <p id="myP"><button class="button" onmousedown="restart(),playAudio()">Restart</button><br></p>
-                </div>
-                </div>
-            </div>
+    </head>
             
             <body style="background-color:rgb(54, 72, 75);">
+                    <div id = "main">
+                <audio id="click">
+                    <source src="clicking.wav" type="audio/wav">
+                </audio>
+                <canvas id="myCanvas" width="1500" height="645"><img id="logo" src="logo.png"><img id="logo2" src="logo2.png"><img id="rules1" src="rules1.png"><img id="rules2" src="rules2.png"><img id="back" src="background.jpg"></canvas>
+                <div class="container">
+                    <div class="row">
+                    <div class="col-sm-6">
+                        <p id="backButton"><button class="button" onclick="back(),playAudio()">Back!</button></p>
+                    </div>
+                <div class="container">
+                    <div class="row">
+                    <div class="col-sm-6">
+                        <p id="myButton"><button class="button" onclick="startGame(),playAudio(),restart()">Play!</button></p>
+                    </div>
+                    <div class="col-sm-6">
+                        <p id="myRules"><button class="button" onclick="rules(),playAudio()">Rules!</button></p>
+                    </div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="row">
+                    <div class="col-sm-6">
+                        <p id="mainMenu"><button class="button" onclick="menu(),playAudio()">Back To Main Menu</button></p>
+                    </div>
+                    <div class="col-sm-6">
+                        <p id="myP"><button class="button" onmousedown="restart(),playAudio()">Restart</button><br></p>
+                    </div>
+                    </div>
+                </div>
+
                 <audio autoplay loop>
                 <source src="boss.mp3" type="audio/mpeg">
               </audio>
