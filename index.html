@@ -67,6 +67,7 @@
                     <div class="col-sm-6">
                         <p id="backButton"><button class="button" onclick="back(),playAudio()">Back!</button></p>
                     </div>
+                  </div>
                 <div class="container">
                     <div class="row">
                     <div class="col-sm-6">
@@ -91,7 +92,7 @@
                 <audio autoplay loop>
                 <source src="boss.mp3" type="audio/mpeg">
               </audio>
-            </body>
+                        
         <script>
               
           var myGamePiece;
@@ -131,8 +132,8 @@
             flying = new sound("flying.wav");
             hitting = new sound("hurt.wav");
             Gheart = new sound("Gheart.wav");
-            myMusic = new sound2("boss.mp3");
-            myMusic.play();
+            //myMusic = new sound2("boss.mp3");
+            //myMusic.play();
             myGameArea.start();
           }
 
