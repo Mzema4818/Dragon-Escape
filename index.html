@@ -102,6 +102,10 @@
             var hitting;
             var Gheart;
             var myMusic;
+            var myMusic2;
+            var myMusic3;
+            var myMusic4;
+            var myMusic5
             var clicking = document.getElementById("click");
 
             window.onload = function() {
@@ -115,7 +119,6 @@
                 ctx.drawImage(img2, 0,0)
                 ctx.drawImage(img, 450, 200);
             }
-
             function startGame() {
                 document.getElementById("myP").style.visibility = "hidden";
                 document.getElementById("myRules").style.visibility = "hidden";
@@ -128,6 +131,10 @@
                 hitting = new sound("hurt.wav");
                 Gheart = new sound("Gheart.wav");
                 myMusic = new sound2("boss.mp3");
+                myMusic2 = new sound2("flame.mp3");
+                myMusic3 = new sound2("aerial.mp3");
+                myMusic4 = new sound2("coliseum.mp3");
+                myMusic5 = new sound2("milky.mp3");
                 myMusic.play()
                 myGameArea.start();
             }
@@ -258,10 +265,10 @@
                 function updateGameArea() {
                     myGamePiece.speedX = 0;
                     myGamePiece.speedY = 0;
-                    if (myGameArea.keys && myGameArea.keys[87]) {myGamePiece.speedY= -2; flying.play(); }
-                    if (myGameArea.keys && myGameArea.keys[83]) {myGamePiece.speedY = 2; flying.play();}
-                    if (myGameArea.keys && myGameArea.keys[65]) {myGamePiece.speedX = -2; flying.play();}
-                    if (myGameArea.keys && myGameArea.keys[68]) {myGamePiece.speedX = 2; flying.play();}
+                    if (myGameArea.keys && myGameArea.keys[87]) {myGamePiece.speedY= -2.5; flying.play(); }
+                    if (myGameArea.keys && myGameArea.keys[83]) {myGamePiece.speedY = 2.5; flying.play();}
+                    if (myGameArea.keys && myGameArea.keys[65]) {myGamePiece.speedX = -2.5; flying.play();}
+                    if (myGameArea.keys && myGameArea.keys[68]) {myGamePiece.speedX = 2.5; flying.play();}
 
                     var x, height, gap, minHeight, maxHeight, minGap, maxGap;
                     for (i = 0; i < myObstacles.length; i += 1) {
@@ -293,7 +300,21 @@
                     myGamePiece.update();
                     myGameArea.frameNo1 -= 1;
                     myGameArea.frameNo += 1;
-                    
+
+                    if(myGameArea.frameNo == 1950){
+                        myMusic.stop()
+                        myMusic2.play()
+                    }if(myGameArea.frameNo == 7702){
+                        myMusic2.stop()
+                        myMusic3.play()
+                    }if(myGameArea.frameNo == 11650){
+                        myMusic3.stop()
+                        myMusic4.play()
+                    }if(myGameArea.frameNo == 25251){
+                        myMusic4.stop()
+                        myMusic5.play()
+                    }
+
                     if (myGameArea.frameNo == 1 || everyinterval(33)) {
                     x = myGameArea.canvas.width;
                         minHeight = 30;
@@ -396,6 +417,10 @@
             }
             function menu(){
                 myMusic.stop()
+                myMusic2.stop()
+                myMusic3.stop()
+                myMusic4.stop()
+                myMusic5.stop()
                 document.getElementById("myP").style.visibility = "hidden";
                 document.getElementById("mainMenu").style.visibility = "hidden";
                 document.getElementById("myButton").style.visibility = "visible";
@@ -439,6 +464,10 @@
             }
             function restart() {
                 myMusic.stop()
+                myMusic2.stop()
+                myMusic3.stop()
+                myMusic4.stop()
+                myMusic5.stop()
                 document.getElementById("mainMenu").style.visibility = "hidden";
                 document.getElementById("myP").style.visibility = "hidden";
                 myGameArea.stop();
