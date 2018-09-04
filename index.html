@@ -105,7 +105,8 @@
             var myMusic2;
             var myMusic3;
             var myMusic4;
-            var myMusic5
+            var myMusic5;
+            var thebackground;
             var clicking = document.getElementById("click");
 
             window.onload = function() {
@@ -124,7 +125,6 @@
                 document.getElementById("myRules").style.visibility = "hidden";
                 document.getElementById("myButton").style.visibility = "hidden";
                 myGamePiece = new component(85, 85, "dragon.png", 300, 150, "image");
-                myBackground = new component(1500 , 645 , "background.jpg", 0, 0, "background");
                 myScore = new component("30px", "Consolas", "black", 1250, 50, "text");
                 myHealth = new component("30px", "Consolas", "black", 1250, 100, "text");
                 flying = new sound("flying.wav");
@@ -291,14 +291,24 @@
                             return;
                         }
                     }
-                    myGameArea.clear();
+
+                    myBackground = new component(1500 , 645 , thebackground, 0, 0, "background");
+                    if(myGameArea.frameNo >= 0 && myGameArea.frameNo <= 1950){
+                            thebackground = "background.jpg"
+                    }if(myGameArea.frameNo >= 1950 && myGameArea.frameNo <= 7702){
+                            thebackground = "background2.jpg"
+                    }if(myGameArea.frameNo >= 7702 && myGameArea.frameNo <= 11650){
+                            thebackground = "background3.jpg"
+                    }if(myGameArea.frameNo >= 11650 && myGameArea.frameNo <= 25251){
+                            thebackground = "background4.jpg"
+                    }
+
                     myGameArea.clear();
                     myBackground.speedX = -5;
                     myBackground.newPos();    
                     myBackground.update();
                     myGamePiece.newPos();    
                     myGamePiece.update();
-                    myGameArea.frameNo1 -= 1;
                     myGameArea.frameNo += 1;
 
                     if(myGameArea.frameNo == 1950){
