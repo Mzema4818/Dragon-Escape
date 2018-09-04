@@ -263,12 +263,6 @@
                     }
                 }
                 function updateGameArea() {
-                    myGamePiece.speedX = 0;
-                    myGamePiece.speedY = 0;
-                    if (myGameArea.keys && myGameArea.keys[87]) {myGamePiece.speedY= -2.5; flying.play(); }
-                    if (myGameArea.keys && myGameArea.keys[83]) {myGamePiece.speedY = 2.5; flying.play();}
-                    if (myGameArea.keys && myGameArea.keys[65]) {myGamePiece.speedX = -2.5; flying.play();}
-                    if (myGameArea.keys && myGameArea.keys[68]) {myGamePiece.speedX = 2.5; flying.play();}
 
                     var x, height, gap, minHeight, maxHeight, minGap, maxGap;
                     for (i = 0; i < myObstacles.length; i += 1) {
@@ -310,6 +304,33 @@
                     myGamePiece.newPos();    
                     myGamePiece.update();
                     myGameArea.frameNo += 1;
+
+                    myGamePiece.speedX = 0;
+                    myGamePiece.speedY = 0;
+                    if (myGameArea.keys && myGameArea.keys[87]) {myGamePiece.speedY = -2.5; flying.play()}
+                    if (myGameArea.keys && myGameArea.keys[83]) {myGamePiece.speedY = 2.5; flying.play()}
+                    if (myGameArea.keys && myGameArea.keys[65]) {myGamePiece.speedX = -2.5; flying.play()}
+                    if (myGameArea.keys && myGameArea.keys[68]) {myGamePiece.speedX = 2.5; flying.play()}
+
+                    if (myGameArea.keys && myGameArea.keys[87] && myGameArea.frameNo >= 1950 && myGameArea.frameNo <= 7702) {myGamePiece.speedY = -3; flying.play()}
+                    if (myGameArea.keys && myGameArea.keys[83] && myGameArea.frameNo >= 1950 && myGameArea.frameNo <= 7702) {myGamePiece.speedY = 3; flying.play()}
+                    if (myGameArea.keys && myGameArea.keys[65] && myGameArea.frameNo >= 1950 && myGameArea.frameNo <= 7702) {myGamePiece.speedX = -3; flying.play()}
+                    if (myGameArea.keys && myGameArea.keys[68] && myGameArea.frameNo >= 1950 && myGameArea.frameNo <= 7702) {myGamePiece.speedX = 3; flying.play()}
+
+                    if (myGameArea.keys && myGameArea.keys[87] && myGameArea.frameNo >= 7702 && myGameArea.frameNo <= 11650) {myGamePiece.speedY = -3.5; flying.play()}
+                    if (myGameArea.keys && myGameArea.keys[83] && myGameArea.frameNo >= 7702 && myGameArea.frameNo <= 11650) {myGamePiece.speedY = 3.5; flying.play()}
+                    if (myGameArea.keys && myGameArea.keys[65] && myGameArea.frameNo >= 7702 && myGameArea.frameNo <= 11650) {myGamePiece.speedX = -3.5; flying.play()}
+                    if (myGameArea.keys && myGameArea.keys[68] && myGameArea.frameNo >= 7702 && myGameArea.frameNo <= 11650) {myGamePiece.speedX = 3.5; flying.play()}
+
+                    if (myGameArea.keys && myGameArea.keys[87] && myGameArea.frameNo >= 11650 && myGameArea.frameNo <= 25251) {myGamePiece.speedY = -4; flying.play()}
+                    if (myGameArea.keys && myGameArea.keys[83] && myGameArea.frameNo >= 11650 && myGameArea.frameNo <= 25251) {myGamePiece.speedY = 4; flying.play()}
+                    if (myGameArea.keys && myGameArea.keys[65] && myGameArea.frameNo >= 11650 && myGameArea.frameNo <= 25251) {myGamePiece.speedX = -4; flying.play()}
+                    if (myGameArea.keys && myGameArea.keys[68] && myGameArea.frameNo >= 11650 && myGameArea.frameNo <= 25251) {myGamePiece.speedX = 4; flying.play()}
+
+                    if (myGameArea.keys && myGameArea.keys[87] && myGameArea.frameNo >= 25251) {myGamePiece.speedY = -4.5; flying.play()}
+                    if (myGameArea.keys && myGameArea.keys[83] && myGameArea.frameNo >= 25251) {myGamePiece.speedY = 4.5; flying.play()}
+                    if (myGameArea.keys && myGameArea.keys[65] && myGameArea.frameNo >= 25251) {myGamePiece.speedX = -4.5; flying.play()}
+                    if (myGameArea.keys && myGameArea.keys[68] && myGameArea.frameNo >= 25251) {myGamePiece.speedX = 4.5; flying.play()}
 
                     if(myGameArea.frameNo == 1950){
                         myMusic.stop()
