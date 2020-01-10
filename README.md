@@ -16,6 +16,6 @@
 
 <h3>Screenshots</h3>
 
-<img src=dragon%20escape.png width ="200px" >
+<img src=dragon%20escape.png width ="500px" >
 
-<img src=dragon%20escape2.png width ="200px" >
+<img src=dragon%20escape2.png width ="500px" >
