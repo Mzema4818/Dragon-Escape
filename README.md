@@ -16,8 +16,6 @@
 
 <h3>Screenshots</h3>
 
-<img src=https://github.com/Mzema4818/Dragon-Escape/dragon%20escape.png width ="200px" >
+<img src=dragon%20escape.png width ="200px" >
 
-<img src="https://github.com/Mzema4818/Aikan-Adventures-/blob/master/To%20the%20Game/images/Aikan%20Adventures%20Picture.png" width ="200px" >
-
-<img src=https://github.com/Mzema4818/Aikan-Adventures-/blob/master/To%20the%20Game/images/Third%20ScreenShot.png width ="200px" >
+<img src=dragon%20escape2.png width ="200px" >
